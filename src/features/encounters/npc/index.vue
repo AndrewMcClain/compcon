@@ -16,12 +16,15 @@
         <v-col cols="auto">
           <roster-group @set="grouping = $event" />
         </v-col>
+        <v-col cols="auto">
+          <label-filter :npcs="npcs" @filtered="filteredNpcs = $event"/>
+        </v-col>
       </v-row>
       <v-divider class="my-2" />
       <v-row dense>
         <v-data-table
           dense
-          :items="npcs"
+          :items="filteredNpcs"
           :headers="headers"
           :group-by="grouping"
           :search="search"
@@ -205,6 +208,7 @@ import { Vue, Component, Watch } from 'vue-property-decorator'
 import PanelView from '../components/PanelView.vue'
 import NpcCard from './NpcCard.vue'
 import RosterGroup from './components/RosterGroup.vue'
+import LabelFilter from './components/LabelFilter.vue'
 import { getModule } from 'vuex-module-decorators'
 import { NpcStore } from '@/store'
 import { Npc, Statblock } from '@/class'
@@ -214,7 +218,7 @@ import { saveFile } from '@/io/Dialog'
 
 @Component({
   name: 'npc-manager',
-  components: { PanelView, NpcCard, RosterGroup },
+  components: { LabelFilter, PanelView, NpcCard, RosterGroup },
 })
 export default class NpcManager extends Vue {
   search = ''
@@ -244,6 +248,7 @@ export default class NpcManager extends Vue {
   }
 
   npcs = getModule(NpcStore, this.$store).Npcs
+  filteredNpcs = this.npcs;
 
   setStatblock(npc: Npc) {
     this.statblockNpc = npc
