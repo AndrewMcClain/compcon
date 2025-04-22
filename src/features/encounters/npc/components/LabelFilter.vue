@@ -9,17 +9,24 @@
       <v-subheader class="heading h2 white--text primary py-0 px-2 mt-n3">
         Filter NPCs By
       </v-subheader>
-      <v-btn block @click="$emit('filtered', clearFilters())">
-        Clear Filters
-      </v-btn>
-      <v-list-item v-for="l in labels" :key="l" class="flavor-text">
-        <v-checkbox
-          :id="l"
-          :value="l"
-          :label="l"
-          v-model="selectedFilters"
-          @change="$emit('filtered', getFilteredNpcs())"
-        ></v-checkbox>
+      <v-list-item
+        :key="clear-filters"
+        class="flavor-text"
+        @click="$emit('filtered', clearFilters())">
+        <v-list-item-content>
+          <v-list-item-title>
+            Clear Filters
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item
+        v-for="l in labels"
+        :key="l"
+        class="flavor-text"
+        @click="$emit('filtered', updateFilteredNpcs())">
+        <v-list-item-content>
+          <v-list-item-title>{{ l }}</v-list-item-title>
+        </v-list-item-content>
       </v-list-item>
     </v-list>
   </v-menu>
@@ -51,7 +58,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    getFilteredNpcs() {
+    updateFilteredNpcs() {
       if (this.selectedFilters.length === 0) {
         return this.npcs
       } else {
